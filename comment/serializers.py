@@ -19,6 +19,12 @@ class CommentSerializer(serializers.ModelSerializer):
             validated_data['root'] = None
         return super().create(validated_data)
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        if ret['root'] is None:
+            ret['child_cnt'] = models.Comment.objects.filter(root=ret['id']).count()
+        return ret
+
     class Meta:
         model = models.Comment
         fields = '__all__'
