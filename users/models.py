@@ -23,3 +23,6 @@ class User(models.Model):
              't': int(time.time())
              }
         )
+
+    class Meta:
+        ordering = ('-created_time',)

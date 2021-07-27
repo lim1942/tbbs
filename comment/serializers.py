@@ -20,9 +20,11 @@ class CommentSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
     def to_representation(self, instance):
+        request = self.context['request']
         ret = super().to_representation(instance)
         if ret['root'] is None:
             ret['child_cnt'] = models.Comment.objects.filter(root=ret['id']).count()
+            ret['child_url'] = request._request.build_absolute_uri(f'?root={ret["id"]}')
         return ret
 
     class Meta:

@@ -16,3 +16,6 @@ class Comment(models.Model):
             return self.msg
         else:
             return self.msg[:10] + '...'
+
+    class Meta:
+        ordering = ('-created_time',)
