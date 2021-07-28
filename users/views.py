@@ -21,7 +21,7 @@ class LoginView(views.APIView):
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid()
+        serializer.is_valid(raise_exception=True)
         username_email = serializer.data['username_email']
         password = serializer.data['password']
         remember = serializer.data['remember']
@@ -29,7 +29,7 @@ class LoginView(views.APIView):
         if user_find:
             user = user_find[0]
             if tools.get_md5(password) == user.password:
-                resp = response.Response({'status': 0, 'msg': '登录成功','info':user.info})
+                resp = response.Response({'status': 0, 'msg': '登录成功','info':user.info},status=201)
                 session_key = uuid.uuid4().hex
                 if remember:
                     # cookie 在浏览器的有效期 和 session 在服务器的 期限都为 30天
@@ -43,9 +43,9 @@ class LoginView(views.APIView):
                 Session.objects.create(session_key=session_key, session_data=user.info, expire_date=session_expire_date)
                 return resp
             else:
-                return response.Response({'status': 101, 'msg': '密码错误'})
+                return response.Response({'status': 101, 'msg': '密码错误'},status=400)
         else:
-            return response.Response({'status': 102, 'msg': '用户不存在'})
+            return response.Response({'status': 102, 'msg': '用户不存在'},status=400)
 
     def get(self, request, *args, **kwargs):
         return response.Response({'msg': '登录接口'})
