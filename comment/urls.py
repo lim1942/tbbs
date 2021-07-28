@@ -5,6 +5,7 @@ from comment import views
 router = DefaultRouter()
 router.register('entry', views.CommentViewSet)
 
+app_name = 'comment'
 urlpatterns = [
     path('', include(router.urls)),
 
