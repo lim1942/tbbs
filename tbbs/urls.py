@@ -14,11 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include, re_path
+from django.views.static import serve
 
+from tbbs import view
+from tbbs.settings import STATIC_ROOT
 
 urlpatterns = [
+    path('', view.index),
+    re_path('^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}),
     path('admin/', admin.site.urls),
-    path('api/<str:version>/users/', include('users.urls',namespace='users')),
-    path('api/<str:version>/comment/', include('comment.urls',namespace='comment')),
+    path('api/<str:version>/users/', include('users.urls', namespace='users')),
+    path('api/<str:version>/comment/', include('comment.urls', namespace='comment')),
 ]
