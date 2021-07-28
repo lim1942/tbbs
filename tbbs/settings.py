@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'users',
-    'comment'
+    'comment',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +139,7 @@ REST_FRAMEWORK = {
     'VERSION_PARAM': 'version',
     'ALLOWED_VERSIONS': ['v1'],
 }
+
+# 跨越
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
