@@ -15,4 +15,5 @@ class UserAuthMiddleware(MiddlewareMixin):
             if session.expire_date >= timezone.now():
                 user_info = json.loads(session.session_data)
                 request.user_info = user_info
-                request.user_item = User.objects.get(username=user_info['username'])
+                if User.objects.filter(username=user_info['username']).exists():
+                    request.user_item = User.objects.get(username=user_info['username'])

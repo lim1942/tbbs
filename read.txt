@@ -5,4 +5,4 @@
     win10/python3.6 用 django + restframework开发,数据采用sqlit。
     window10已测试完成。
 
-运行方式： 点击 start.bat 脚本，浏览器访问  http://localhost:8000/
+运行方式： 点击 start.bat 脚本，浏览器访问  http://127.0.0.1:8000/

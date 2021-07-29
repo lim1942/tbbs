@@ -4,19 +4,21 @@ from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Q
 from django.contrib.sessions.models import Session
-from django.http.response import HttpResponseRedirect
 from rest_framework import viewsets, mixins, views, response
 
 from users import tools
 from users import models, serializers
+from tbbs.auth import CsrfExemptSessionAuthentication
 
 
 class UserViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
 
 class LoginView(views.APIView):
+    authentication_classes = (CsrfExemptSessionAuthentication,)
 
     def get_serializer(self, *args, **kwargs):
         return serializers.LoginSerializer(*args, **kwargs)
@@ -63,4 +65,4 @@ class LogoutView(views.APIView):
             Session.objects.filter(session_key=session_key).delete()
         except:
             traceback.print_exc()
-        return HttpResponseRedirect('/')
+        return resp

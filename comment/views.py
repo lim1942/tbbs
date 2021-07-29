@@ -1,6 +1,7 @@
 from rest_framework import viewsets, response
 from django_filters.rest_framework import DjangoFilterBackend
 
+from tbbs.auth import CsrfExemptSessionAuthentication
 from comment import models, serializers, permissions, filters, pagination
 
 
@@ -9,6 +10,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.CommentSerializer
     permission_classes = (permissions.CreateLoginAcquirePermission,)
     pagination_class = pagination.CommentPagination
+    authentication_classes = (CsrfExemptSessionAuthentication,)
     filter_backends = (filters.RootCommentFilter, DjangoFilterBackend)
     filterset_fields = {'root': ['exact'],
                         'parent': ['exact'],
