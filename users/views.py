@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Q
 from django.contrib.sessions.models import Session
+from django.http.response import HttpResponseRedirect
 from rest_framework import viewsets, mixins, views, response
 
 from users import tools
@@ -62,4 +63,4 @@ class LogoutView(views.APIView):
             Session.objects.filter(session_key=session_key).delete()
         except:
             traceback.print_exc()
-        return resp
+        return HttpResponseRedirect('/')
