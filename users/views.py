@@ -1,3 +1,4 @@
+import traceback
 import uuid
 from datetime import timedelta
 from django.utils import timezone
@@ -49,3 +50,16 @@ class LoginView(views.APIView):
 
     def get(self, request, *args, **kwargs):
         return response.Response({'msg': '登录接口'})
+
+
+class LogoutView(views.APIView):
+
+    def get(self, request, *args, **kwargs):
+        resp = response.Response({'msg': '退出成功','status':0},status=201)
+        resp.delete_cookie('session_key')
+        session_key = request._request.COOKIES.get("session_key")
+        try:
+            Session.objects.filter(session_key=session_key).delete()
+        except:
+            traceback.print_exc()
+        return resp

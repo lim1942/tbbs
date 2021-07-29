@@ -12,11 +12,13 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user_item
-        validated_data['username'] = validated_data['user'].username
+        validated_data['pub_username'] = validated_data['user'].username
         parent = validated_data['parent']
         if parent:
+            validated_data['parent_username'] = parent.user.username
             validated_data['root'] = parent.root or parent
         else:
+            validated_data['parent_username'] = None
             validated_data['root'] = None
         return super().create(validated_data)
 
@@ -31,5 +33,5 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Comment
         fields = '__all__'
-        read_only_fields = ['user', 'username','root']
+        read_only_fields = ['user','root','pub_username','parent_username']
 
