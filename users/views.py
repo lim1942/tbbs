@@ -3,6 +3,7 @@ import uuid
 from datetime import timedelta
 from django.utils import timezone
 from django.db.models import Q
+from django.http.response import HttpResponseRedirect
 from django.contrib.sessions.models import Session
 from rest_framework import viewsets, mixins, views, response
 
@@ -58,7 +59,7 @@ class LoginView(views.APIView):
 class LogoutView(views.APIView):
 
     def get(self, request, *args, **kwargs):
-        resp = response.Response({'msg': '退出成功','status':0},status=201)
+        resp = HttpResponseRedirect('/')
         resp.delete_cookie('session_key')
         session_key = request._request.COOKIES.get("session_key")
         try:
